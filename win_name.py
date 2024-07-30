@@ -1,5 +1,6 @@
 from os import system, listdir, rename
 from os.path import isdir
+from re import compile
 
 
 def run():
@@ -59,10 +60,19 @@ def full_rename_menu():
         entries = listdir(directory)
         msg = f"\nThe following entries will be affected:\n\n{'\n'.join(entries)}\n\nProceed? [Y/N] "
         if bool(wait_for_input(msg)):
+            print("\nRenaming directories...")
+            regexp = compile(r"\.\w{3,4}$")
             for entry in entries:
-                # print(f"{directory}\\{entry}")
-                rename(f"{directory}\\{entry}", new_name)
-            wait_for_input("")
+                m = regexp.findall(entry)
+                ext = m.pop() if len(m) > 0 else ""
+                src = f"{directory}\\{entry}"
+                dst = f"{new_name}{ext}"
+                print(src)
+                print(dst)
+                wait_for_input("")
+                # rename(src, dst)
+                print(f"\nRenaming: '{src}' -> '{directory}\\{dst}'.")
+            wait_for_input("Process finished. Press anything to exit.")
 
     else:
         print("Invalid or non-existing directory.")
