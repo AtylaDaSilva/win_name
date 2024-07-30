@@ -1,6 +1,8 @@
+import sys
 from os import system, listdir, rename
 from os.path import isdir
 from re import compile
+from pathlib import Path
 
 
 def run():
@@ -10,6 +12,11 @@ def run():
 
 def clear():
     system("cls")
+
+
+def kill():
+    wait_for_input("Exiting... Press anything to continue.")
+    sys.exit()
 
 
 def wait_for_input(message):
@@ -28,8 +35,7 @@ def main_menu():
     main_title("Win_name")
 
     main_menu_options = {
-        1: "[1] Full Rename",
-        2: "[2] Match & Replace",
+        1: "[1] Match & Replace",
     }
 
     for k, v in main_menu_options.items():
@@ -39,49 +45,24 @@ def main_menu():
 
     match choice:
         case 1:
-            full_rename_menu()
-        case 2:
-            match_and_replace_menu()
+            match_and_replace()
         case _:
-            wait_for_input("Invalid choice. Press anything to exit program.")
+            wait_for_input("Invalid choice. Press anything to exit.")
 
     return
 
 
-def full_rename_menu():
+def match_and_replace():
     clear()
-    main_title("Full Rename")
-
+    main_title("Match & Replace")
     directory = wait_for_input("Insert a directory: ")
-    new_name = wait_for_input("Insert the new name: ")
 
-    if isdir(directory):
-        #
-        entries = listdir(directory)
-        msg = f"\nThe following entries will be affected:\n\n{'\n'.join(entries)}\n\nProceed? [Y/N] "
-        if bool(wait_for_input(msg)):
-            print("\nRenaming directories...")
-            regexp = compile(r"\.\w{3,4}$")
-            for entry in entries:
-                m = regexp.findall(entry)
-                ext = m.pop() if len(m) > 0 else ""
-                src = f"{directory}\\{entry}"
-                dst = f"{new_name}{ext}"
-                print(src)
-                print(dst)
-                wait_for_input("")
-                # rename(src, dst)
-                print(f"\nRenaming: '{src}' -> '{directory}\\{dst}'.")
-            wait_for_input("Process finished. Press anything to exit.")
-
-    else:
+    if not isdir(directory):
         print("Invalid or non-existing directory.")
-        wait_for_input("Exiting. Press anything to continue...")
-    return
+        kill()
 
+    p = Path(directory)
 
-def match_and_replace_menu():
-    clear()
-    print("TODO")
+    wait_for_input("")
     return
 
