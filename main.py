@@ -1,3 +1,4 @@
-from win_name import run
+from win_name import Win_name
 
-run()
+wn = Win_name
+wn.run()

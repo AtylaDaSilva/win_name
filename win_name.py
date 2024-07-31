@@ -4,65 +4,68 @@ from os.path import isdir
 from re import compile
 from pathlib import Path
 
+class Win_name:
+    def __init__(self) -> None:
+        self.quit = True
 
-def run():
-    main_menu()
-    return
-
-
-def clear():
-    system("cls")
-
-
-def kill():
-    wait_for_input("Exiting... Press anything to continue.")
-    sys.exit()
+    def run(self):
+        while not self.quit:
+            self.main_menu()
+        self.kill()
 
 
-def wait_for_input(message):
-    return input(message)
+    def clear(self):
+        system("cls")
 
 
-def main_title(title: str):
-    main_title_mult = 30
-    print("*" * main_title_mult)
-    print("|" + title.center(main_title_mult - 2, " ") + "|")
-    print("*" * main_title_mult)
+    def kill(self):
+        self.wait_for_input("Exiting... Press anything to continue.")
+        sys.exit()
+
+    def wait_for_input(self, message):
+        return input(message)
 
 
-def main_menu():
-    clear()
-    main_title("Win_name")
-
-    main_menu_options = {
-        1: "[1] Match & Replace",
-    }
-
-    for k, v in main_menu_options.items():
-        print(v)
-
-    choice = int(wait_for_input("Choose an option: "))
-
-    match choice:
-        case 1:
-            match_and_replace()
-        case _:
-            wait_for_input("Invalid choice. Press anything to exit.")
-
-    return
+    def main_title(self, title: str):
+        main_title_mult = 30
+        print("*" * main_title_mult)
+        print("|" + title.center(main_title_mult - 2, " ") + "|")
+        print("*" * main_title_mult)
 
 
-def match_and_replace():
-    clear()
-    main_title("Match & Replace")
-    directory = wait_for_input("Insert a directory: ")
+    def main_menu(self):
+        self.clear()
+        self.main_title("Win_name")
 
-    if not isdir(directory):
-        print("Invalid or non-existing directory.")
-        kill()
+        main_menu_options = (
+            "[1] Match & Replace"
+        )
 
-    p = Path(directory)
+        for opt in main_menu_options:
+            print(opt)
 
-    wait_for_input("")
-    return
+        choice = int(self.wait_for_input("Choose an option: "))
+
+        match choice:
+            case 1:
+                self.match_and_replace()
+            case _:
+                self.wait_for_input("Invalid choice. Press anything to continue.")
+
+        return
+
+
+    def match_and_replace(self):
+        self.clear()
+        self.main_title("Match & Replace")
+        directory = wait_for_input("Insert a directory: ")
+
+        if not isdir(directory):
+            print("Invalid or non-existing directory.")
+            kill()
+
+        p = Path(directory)
+
+        self.wait_for_input("")
+        return
 
